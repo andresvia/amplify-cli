@@ -39,6 +39,13 @@ async function run(context) {
         },
       ],
     };
+    // very quick and dirty hack so amplify init can be invoked with a custom RoleArn
+    // when creating CFN stacks, like:
+    // SOURCE_STACK_ROLE_ARN=arn:aws:iam::123456789012:role/MyCloudFormationRole amplify init
+    // etc...
+    if (process.env.SOURCE_STACK_ROLE_ARN) {
+      params["RoleArn"] = process.env.SOURCE_STACK_ROLE_ARN
+    }
 
     const spinner = ora();
     spinner.start('Initializing project in the cloud...');
